@@ -32,8 +32,11 @@ def main():
 
     player = Player(w//2, h//2)
     bullets = []
+    counter = 0
     while running:
         
+        counter += 1
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
@@ -50,7 +53,7 @@ def main():
         if keystates[K_DOWN]:
             player.y += 1
 
-        if keystates[K_SPACE]:
+        if keystates[K_SPACE] and counter%20 == 0:
             bullets.append(Bullet(player.x, player.y))
 
         if player.x < 0:
@@ -64,7 +67,7 @@ def main():
 
         for bullet in bullets:
             bullet.y -= 1
-            if bullet.y < 50:
+            if bullet.y < 0:
                 bullets.remove(bullet)
 
         screen.fill((0,20,0,0))
