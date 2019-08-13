@@ -62,6 +62,11 @@ def main():
         if player.y > h:
             player.y = h
 
+        for bullet in bullets:
+            bullet.y -= 1
+            if bullet.y < 50:
+                bullets.remove(bullet)
+
         screen.fill((0,20,0,0))
         pygame.draw.circle(screen, (0,200,0), (player.x,player.y), 5)
         for bullet in bullets:
