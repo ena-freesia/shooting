@@ -2,10 +2,21 @@ import pygame
 from pygame.locals import *
 import sys
 
+class Player(pygame.splite.Splite):
+    """自機"""
+    speed = 5 #移動速度
+    def __init__(self, x, y):
+        self.x = 0
+        self.y = 0
+
+    def move(self, x, y):
+        self.x += x
+        self.y += y
+        
+
 def main():
 
     (w,h) = (400, 400)
-    (x,y) = (w//2, h//2)
     pygame.init()
     pygame.display.set_mode((w,h))
     pygame.display.set_caption("Test")  
@@ -15,6 +26,7 @@ def main():
     
     running = True
 
+    player = player(w//2, h//2)
     while running:
         
         for event in pygame.event.get():
@@ -25,25 +37,25 @@ def main():
         if keystates[K_ESCAPE]:
             running = False
         if keystates[K_LEFT]:
-            x -= 1
+            player.x -= 1
         if keystates[K_RIGHT]:
-            x += 1
+            player.x += 1
         if keystates[K_UP]:
-            y -= 1
+            player.y -= 1
         if keystates[K_DOWN]:
-            y += 1
+            player.y += 1
 
-        if x < 0:
-            x = 0
-        if x > w:
-            x = w
-        if y < 0:
-            y = 0
-        if y > h:
-            y = h
+        if player.x < 0:
+            player.x = 0
+        if player.x > w:
+            player.x = w
+        if player.y < 0:
+            player.y = 0
+        if player.y > h:
+            player.y = h
 
         screen.fill((0,20,0,0))
-        pygame.draw.circle(screen, (0,200,0), (x,y), 5)
+        pygame.draw.circle(screen, (0,200,0), (player.x,player.y), 5)
         pygame.display.update() #flip()
         
         clock.tick(30)
