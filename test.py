@@ -4,7 +4,6 @@ import sys
 
 class Player:
     """自機"""
-    speed = 5 #移動速度
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -13,6 +12,11 @@ class Player:
         self.x += x
         self.y += y
         
+class Bullet:
+    """弾"""
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
 def main():
 
@@ -27,6 +31,7 @@ def main():
     running = True
 
     player = Player(w//2, h//2)
+    bullets = []
     while running:
         
         for event in pygame.event.get():
@@ -45,6 +50,9 @@ def main():
         if keystates[K_DOWN]:
             player.y += 1
 
+        if keystates[K_SPACE]:
+            bullets.append(Bullet(player.x, player.y))
+
         if player.x < 0:
             player.x = 0
         if player.x > w:
@@ -56,6 +64,8 @@ def main():
 
         screen.fill((0,20,0,0))
         pygame.draw.circle(screen, (0,200,0), (player.x,player.y), 5)
+        for bullet in bullets:
+            pygame.draw.circle(screen, (0, 0, 200), (bullet.x, bullet.y), 3)
         pygame.display.update() #flip()
         
         clock.tick(30)
