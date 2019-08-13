@@ -2,12 +2,12 @@ import pygame
 from pygame.locals import *
 import sys
 
-class Player(pygame.splite.Splite):
+class Player:
     """自機"""
     speed = 5 #移動速度
     def __init__(self, x, y):
-        self.x = 0
-        self.y = 0
+        self.x = x
+        self.y = y
 
     def move(self, x, y):
         self.x += x
@@ -26,7 +26,7 @@ def main():
     
     running = True
 
-    player = player(w//2, h//2)
+    player = Player(w//2, h//2)
     while running:
         
         for event in pygame.event.get():
