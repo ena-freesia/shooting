@@ -18,6 +18,12 @@ class Bullet:
         self.x = x
         self.y = y
 
+class Enemy:
+    """敵"""
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
 def main():
 
     (w,h) = (400, 400)
@@ -31,6 +37,7 @@ def main():
     running = True
 
     player = Player(w//2, h//2)
+    enemys = []
     bullets = []
     counter = 0
     while running:
@@ -56,6 +63,9 @@ def main():
         if keystates[K_SPACE] and counter%20 == 0:
             bullets.append(Bullet(player.x, player.y))
 
+        if counter%50 == 0:
+            enemys.append(Enemy(w, 50))
+
         if player.x < 0:
             player.x = 0
         if player.x > w:
@@ -70,10 +80,18 @@ def main():
             if bullet.y < 0:
                 bullets.remove(bullet)
 
+        for enemy in enemys:
+            enemy.x -= 1
+            if enemy.x < 0:
+                enemys.remove(enemy)
+
+
         screen.fill((0,20,0,0))
         pygame.draw.circle(screen, (0,200,0), (player.x,player.y), 5)
         for bullet in bullets:
             pygame.draw.circle(screen, (0, 0, 200), (bullet.x, bullet.y), 3)
+        for enemy in enemys:
+            pygame.draw.circle(screen, (200, 0, 0), (enemy.x, enemy.y), 10)
         pygame.display.update() #flip()
         
         clock.tick(30)
