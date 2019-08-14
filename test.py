@@ -11,30 +11,36 @@ class Player:
     def move(self, x, y):
         self.x += x
         self.y += y
-        
+
+    def draw(self, screen):
+        pygame.draw.circle(screen, (0, 200, 0), (self.x, self.y), 5)
+
 class Bullet:
     """弾"""
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
+    def draw(self, screen):
+        pygame.draw.circle(screen, (0, 0, 200), (self.x, self.y), 3)
+
 def main():
 
     (w,h) = (400, 400)
     pygame.init()
     pygame.display.set_mode((w,h))
-    pygame.display.set_caption("Test")  
+    pygame.display.set_caption("Test")
     screen = pygame.display.get_surface()
 
     clock = pygame.time.Clock()
-    
+
     running = True
 
     player = Player(w//2, h//2)
     bullets = []
     counter = 0
     while running:
-        
+
         counter += 1
 
         for event in pygame.event.get():
@@ -71,14 +77,14 @@ def main():
                 bullets.remove(bullet)
 
         screen.fill((0,20,0,0))
-        pygame.draw.circle(screen, (0,200,0), (player.x,player.y), 5)
+        player.draw(screen)
         for bullet in bullets:
-            pygame.draw.circle(screen, (0, 0, 200), (bullet.x, bullet.y), 3)
+            bullet.draw(screen)
         pygame.display.update() #flip()
-        
+
         clock.tick(30)
-          
-    pygame.quit()            
-                        
+
+    pygame.quit()
+
 if __name__ == "__main__":
     main()
