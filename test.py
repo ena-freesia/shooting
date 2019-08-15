@@ -1,5 +1,6 @@
 import sys
 import pygame
+import math
 from pygame.locals import *
 
 
@@ -29,15 +30,18 @@ class Circle(Point):
 class Player(Circle):
     """自機"""
     def __init__(self, x, y):
-        super().__init__(x, y, 5)
+        super().__init__(x, y, 10)
 
     def draw(self, screen):
-        pygame.draw.circle(screen, (0, 200, 0), (self.x, self.y), self.r)
+        p1 = [self.x, self.y - 2 * self.r]
+        p2 = [self.x - math.sqrt(3) * self.r, self.y + self.r]
+        p3 = [self.x + math.sqrt(3) * self.r, self.y + self.r]
+        pygame.draw.polygon(screen, (0, 200, 0), [p1, p2, p3], 0)
 
 class Bullet(Circle):
     """弾"""
     def __init__(self, x, y):
-        super().__init__(x, y, 3)
+        super().__init__(x, y, 5)
 
     def draw(self, screen):
         pygame.draw.circle(screen, (0, 0, 200), (self.x, self.y), self.r)
@@ -117,7 +121,7 @@ def main():
             if bullet.y < 0:
                 bullets.remove(bullet)
 
-        # 敵消去
+        # 敵移動・消去
         for enemy in enemys:
             enemy.move(-1, 0, 5)
             if enemy.x < 0:
