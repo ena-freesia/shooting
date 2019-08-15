@@ -1,6 +1,7 @@
 import sys
 import pygame
 import math
+import random
 from pygame.locals import *
 
 
@@ -97,15 +98,17 @@ def main():
         player.move(key_x, key_y, 5)
 
         # 弾生成
-        if keystates[K_SPACE] and counter%5 == 0:
-            bullets.append(Bullet(player.x, player.y))
+        if keystates[K_SPACE]:
+            if  counter%5 == 0 or keystates[K_LSHIFT]:
+                bullets.append(Bullet(player.x, player.y))
         
         # 敵生成
         if counter%10 == 0:
-            if len(enemys) > 5:
+            if len(enemys) > 10:
                 continue
-            enemys.append(Enemy(w, 50))
+            enemys.append(Enemy(w, random.randint(10,  300)))
 
+        
         if player.x < 0:
             player.x = 0
         if player.x > w:
