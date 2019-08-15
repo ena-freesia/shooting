@@ -52,7 +52,7 @@ class Enemy(Circle):
 
 def main():
 
-    (w,h) = (400, 400)
+    (w,h) = (1280, 720)
     pygame.init()
     pygame.display.set_mode((w,h))
     pygame.display.set_caption("Test")
