@@ -13,26 +13,41 @@ class Point:
         self.x += x
         self.y += y
 
-class Player(Point):
+class Circle(Point):
+    """円"""
+    def __init__(self, x, y, r):
+        super().__init__(x, y)
+        self.r = r
+
+    def hit(self, other):
+        dx = self.x - other.x
+        dy = self.y - other.y
+        dr = self.r + other.r
+        return dr ** 2 > dx ** 2 + dy ** 2
+
+class Player(Circle):
     """自機"""
     def __init__(self, x, y):
-        super().__init__(x, y)
+        super().__init__(x, y, 5)
 
     def draw(self, screen):
-        pygame.draw.circle(screen, (0, 200, 0), (self.x, self.y), 5)
+        pygame.draw.circle(screen, (0, 200, 0), (self.x, self.y), self.r)
 
-class Bullet(Point):
+class Bullet(Circle):
     """弾"""
     def __init__(self, x, y):
-        super().__init__(x, y)
+        super().__init__(x, y, 3)
 
     def draw(self, screen):
-        pygame.draw.circle(screen, (0, 0, 200), (self.x, self.y), 3)
+        pygame.draw.circle(screen, (0, 0, 200), (self.x, self.y), self.r)
 
-class Enemy(Point):
+class Enemy(Circle):
     """敵"""
     def __init__(self, x, y):
-        super().__init__(x, y)
+        super().__init__(x, y, 10)
+
+    def draw(self, screen):
+        pygame.draw.circle(screen, (200, 0, 0), (self.x, self.y), self.r)
 
 def main():
 
@@ -74,6 +89,8 @@ def main():
             bullets.append(Bullet(player.x, player.y))
 
         if counter%50 == 0:
+            if len(enemys) > 5:
+                continue
             enemys.append(Enemy(w, 50))
 
         if player.x < 0:
@@ -95,13 +112,21 @@ def main():
             if enemy.x < 0:
                 enemys.remove(enemy)
 
+        for bullet in bullets:
+            for enemy in enemys:
+                if bullet.hit(enemy):
+                    bullets.remove(bullet)
+                    enemys.remove(enemy)
+        
+        
+
 
         screen.fill((0,20,0,0))
         player.draw(screen)
         for bullet in bullets:
             bullet.draw(screen)
         for enemy in enemys:
-            pygame.draw.circle(screen, (200, 0, 0), (enemy.x, enemy.y), 10)
+            enemy.draw(screen)
         pygame.display.update() #flip()
 
         clock.tick(30)
