@@ -9,9 +9,10 @@ class Point:
         self.x = x
         self.y = y
 
-    def move(self, x, y):
-        self.x += x
-        self.y += y
+    def move(self, x, y, s):
+        self.x += x * s
+        self.y += y * s
+
 
 class Circle(Point):
     """円"""
@@ -76,19 +77,27 @@ def main():
         keystates = pygame.key.get_pressed()
         if keystates[K_ESCAPE]:
             running = False
+
+        # move player+
+        key_x = 0
+        key_y = 0
         if keystates[K_LEFT]:
-            player.x -= 1
+            key_x -= 1
         if keystates[K_RIGHT]:
-            player.x += 1
+            key_x += 1
         if keystates[K_UP]:
-            player.y -= 1
+            key_y -= 1
         if keystates[K_DOWN]:
-            player.y += 1
+            key_y += 1
 
-        if keystates[K_SPACE] and counter%20 == 0:
+        player.move(key_x, key_y, 5)
+
+        # 弾生成
+        if keystates[K_SPACE] and counter%5 == 0:
             bullets.append(Bullet(player.x, player.y))
-
-        if counter%50 == 0:
+        
+        # 敵生成
+        if counter%10 == 0:
             if len(enemys) > 5:
                 continue
             enemys.append(Enemy(w, 50))
@@ -102,13 +111,15 @@ def main():
         if player.y > h:
             player.y = h
 
+        # 弾消去
         for bullet in bullets:
-            bullet.y -= 1
+            bullet.move(0, -1, 10)
             if bullet.y < 0:
                 bullets.remove(bullet)
 
+        # 敵消去
         for enemy in enemys:
-            enemy.x -= 1
+            enemy.move(-1, 0, 5)
             if enemy.x < 0:
                 enemys.remove(enemy)
 
