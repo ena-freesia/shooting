@@ -1,9 +1,10 @@
+import sys
 import pygame
 from pygame.locals import *
-import sys
 
-class Player:
-    """自機"""
+
+class Point:
+    """座標"""
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -12,23 +13,26 @@ class Player:
         self.x += x
         self.y += y
 
+class Player(Point):
+    """自機"""
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
     def draw(self, screen):
         pygame.draw.circle(screen, (0, 200, 0), (self.x, self.y), 5)
 
-class Bullet:
+class Bullet(Point):
     """弾"""
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        super().__init__(x, y)
 
     def draw(self, screen):
         pygame.draw.circle(screen, (0, 0, 200), (self.x, self.y), 3)
 
-class Enemy:
+class Enemy(Point):
     """敵"""
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        super().__init__(x, y)
 
 def main():
 
